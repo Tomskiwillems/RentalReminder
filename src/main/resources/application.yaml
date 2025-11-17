@@ -1,0 +1,26 @@
+spring:
+  application:
+    name: java-21-springboot-template
+  
+  datasource:
+    url: jdbc:postgresql://${SUPABASE_DB_HOST:db.xxxxx.supabase.co}:${SUPABASE_DB_PORT:5432}/${SUPABASE_DB_NAME:postgres}
+    username: ${SUPABASE_DB_USER:postgres}
+    password: ${SUPABASE_DB_PASSWORD:your-password}
+    driver-class-name: org.postgresql.Driver
+  
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+
+supabase:
+  url: ${SUPABASE_URL:https://xxxxx.supabase.co}
+  anon-key: ${SUPABASE_ANON_KEY:your-anon-key-here}
+
+server:
+  port: 8080
+
