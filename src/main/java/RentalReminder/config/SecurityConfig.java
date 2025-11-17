@@ -1,4 +1,4 @@
-package nl.blitz.java21springboottemplate.config;
+package RentalReminder.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

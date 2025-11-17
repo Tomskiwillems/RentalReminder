@@ -3,14 +3,14 @@ spring:
     name: java-21-springboot-template
   
   datasource:
-    url: jdbc:postgresql://${SUPABASE_DB_HOST:db.xxxxx.supabase.co}:${SUPABASE_DB_PORT:5432}/${SUPABASE_DB_NAME:postgres}
-    username: ${SUPABASE_DB_USER:postgres}
-    password: ${SUPABASE_DB_PASSWORD:your-password}
+    url: jdbc:postgresql://aws-1-eu-west-1.pooler.supabase.com:6543/postgres?sslmode=require
+    username: postgres.fcwwtnfyhiibrnbldmfw
+    password: HoiRens-12345
     driver-class-name: org.postgresql.Driver
   
   jpa:
     hibernate:
-      ddl-auto: validate
+      ddl-auto: update
     show-sql: false
     properties:
       hibernate:
@@ -18,7 +18,7 @@ spring:
         format_sql: true
 
 supabase:
-  url: ${SUPABASE_URL:https://xxxxx.supabase.co}
+  url: ${SUPABASE_URL:https://fcwwtnfyhiibrnbldmfw.supabase.co}
   anon-key: ${SUPABASE_ANON_KEY:your-anon-key-here}
 
 server:

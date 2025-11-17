@@ -1,10 +1,10 @@
-package nl.blitz.java21springboottemplate;
+package RentalReminder;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class Java21SpringbootTemplateApplicationTests {
+class RentalReminderApplicationTests {
 
     @Test
     void contextLoads() {

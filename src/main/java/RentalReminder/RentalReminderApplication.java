@@ -1,13 +1,13 @@
-package nl.blitz.java21springboottemplate;
+package RentalReminder;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class Java21SpringbootTemplateApplication {
+public class RentalReminderApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(Java21SpringbootTemplateApplication.class, args);
+        SpringApplication.run(RentalReminderApplication.class, args);
     }
 
 }

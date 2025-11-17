@@ -1,4 +1,4 @@
-package nl.blitz.java21springboottemplate.client;
+package RentalReminder.client;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;

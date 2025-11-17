@@ -1,6 +1,6 @@
-package nl.blitz.java21springboottemplate.repository;
+package RentalReminder.repository;
 
-import nl.blitz.java21springboottemplate.entity.UserProfile;
+import RentalReminder.entity.UserProfile;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
