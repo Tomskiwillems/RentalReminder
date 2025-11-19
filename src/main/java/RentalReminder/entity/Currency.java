@@ -3,15 +3,15 @@ package RentalReminder.entity;
 import jakarta.persistence.*;
 
 import java.util.List;
-import java.util.UUID;
 
 @Entity
 @Table(name = "currency")
 public class Currency {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false, unique = true)
-    private UUID id;
+    private int id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_user_profile") // FK column
@@ -26,11 +26,11 @@ public class Currency {
     @OneToMany(mappedBy = "currency", fetch = FetchType.LAZY)
     private java.util.List<BorrowedGood> borrowedGoods = new java.util.ArrayList<>();
 
-    public UUID getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(int id) {
         this.id = id;
     }
 

@@ -2,7 +2,6 @@ package RentalReminder.entity;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Entity
 @Table(name = "lent_good")
@@ -10,8 +9,9 @@ import java.util.UUID;
 public class LentGood {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false, unique = true)
-    private UUID id;
+    private int id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_user_profile", nullable = false)
@@ -38,11 +38,11 @@ public class LentGood {
     @Column(name = "deleted", nullable = false)
     private Boolean deleted = false;
 
-    public UUID getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(int id) {
         this.id = id;
     }
 

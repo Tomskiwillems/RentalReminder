@@ -1,6 +1,6 @@
 package RentalReminder.dto;
 
-public class SupabaseRegisterResponse {
+public class SupabaseResponse {
     private SupabaseUser user;
     private SupabaseSession session;
 

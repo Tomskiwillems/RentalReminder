@@ -1,17 +1,19 @@
 package RentalReminder.dto;
 
+import java.util.UUID;
+
 public class LoginRequestDto {
 
-    private int Id;
+    private UUID id;
     private String email;
     private String password;
 
-    public int getId() {
-        return Id;
+    public UUID getId() {
+        return id;
     }
 
-    public void setId(int id) {
-        Id = id;
+    public void setId(UUID id) {
+        this.id = id;
     }
 
     public String getEmail() {

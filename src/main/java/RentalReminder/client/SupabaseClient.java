@@ -1,8 +1,10 @@
 package RentalReminder.client;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClient;
 
 @Component
@@ -24,6 +26,7 @@ public class SupabaseClient {
     }
 
     public <T, R> R register(T requestBody, Class<R> responseType) {
+        System.out.println("Loaded anon key = " + anonKey);
         return restClient.post()
                 .uri("/auth/v1/signup")
                 .header("Authorization", "Bearer " + anonKey)
@@ -33,11 +36,18 @@ public class SupabaseClient {
     }
 
     public <T, R> R login(T requestBody, Class<R> responseType) {
-        return restClient.post()
-                .uri("/auth/v1/token")
-                .header("Authorization", "Bearer " + anonKey)
-                .body(requestBody)
-                .retrieve()
-                .body(responseType);
+        try {
+            return restClient.post()
+                    .uri("/auth/v1/token?grant_type=password")
+                    .header("Authorization", "Bearer " + anonKey)
+                    .body(requestBody)
+                    .retrieve()
+                    .body(responseType);
+        } catch (HttpClientErrorException e) {
+            if (e.getStatusCode() == HttpStatus.UNAUTHORIZED) {
+                throw new RuntimeException("Incorrect email or password");
+            }
+            throw e; // rethrow other errors
+        }
     }
 }
