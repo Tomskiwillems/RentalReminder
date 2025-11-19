@@ -2,6 +2,7 @@ package RentalReminder.entity;
 
 import jakarta.persistence.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -21,6 +22,12 @@ public class Item {
 
     @Column(name = "description")
     private String description;
+
+    @OneToMany(mappedBy = "item", fetch = FetchType.LAZY)
+    private java.util.List<LentGood> lentGoods = new java.util.ArrayList<>();
+
+    @OneToMany(mappedBy = "item", fetch = FetchType.LAZY)
+    private java.util.List<BorrowedGood> borrowedGoods = new java.util.ArrayList<>();
 
     public UUID getId() {
         return id;
@@ -52,5 +59,20 @@ public class Item {
 
     public void setDescription(String description) {
         this.description = name;
+    }
+
+    public List<LentGood> getLentGoods() {
+        return lentGoods;
+    }
+
+    public void setLentGoods(List<LentGood> lentGoods) {
+        this.lentGoods = lentGoods;
+    }
+
+    public List<BorrowedGood> getBorrowedGoods() {
+        return borrowedGoods;
+    }
+    public void setBorrowedGoods(List<BorrowedGood> borrowedGoods) {
+        this.borrowedGoods = borrowedGoods;
     }
 }
