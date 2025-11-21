@@ -44,8 +44,8 @@ public class SupabaseClient {
                     .retrieve()
                     .body(responseType);
         } catch (HttpClientErrorException e) {
-            if (e.getStatusCode() == HttpStatus.UNAUTHORIZED) {
-                throw new RuntimeException("Incorrect email or password");
+            if (e.getStatusCode() == HttpStatus.BAD_REQUEST) {
+                throw new RuntimeException("Invalid email or password");
             }
             throw e; // rethrow other errors
         }

@@ -2,7 +2,7 @@ package RentalReminder.dto;
 
 import java.util.UUID;
 
-public class RegisterRequestDto {
+public class RegisterRequest {
 
     private UUID id;
     private String email;
