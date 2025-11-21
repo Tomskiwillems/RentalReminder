@@ -58,7 +58,7 @@ public class Item {
     }
 
     public void setDescription(String description) {
-        this.description = name;
+        this.description = description;
     }
 
     public List<LentGood> getLentGoods() {
