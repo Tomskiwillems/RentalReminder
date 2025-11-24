@@ -9,6 +9,7 @@ import RentalReminder.entity.UserProfile;
 import RentalReminder.mapper.UserProfileMapper;
 import RentalReminder.repository.UserProfileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -38,11 +39,18 @@ public class UserService {
         return "User registered successfully";
     }
 
-    public String loginUser(LoginRequest loginRequest) {
+    public ResponseCookie loginUser(LoginRequest loginRequest) {
         if (!userProfileRepository.existsByEmail(loginRequest.getEmail())) {
             throw new RuntimeException("No user registered with that email");
         }
         SupabaseResponse supabaseResponse = supabaseClient.login(loginRequest, SupabaseResponse.class);
-        return "You are logged in successfully";
+        String access_token = supabaseResponse.getAccessToken();
+        return ResponseCookie.from("access_token", access_token)
+                .httpOnly(true)
+                .secure(false)
+                .sameSite("Lax")
+                .path("/")
+                .maxAge(60 * 60)
+                .build();
     }
 }

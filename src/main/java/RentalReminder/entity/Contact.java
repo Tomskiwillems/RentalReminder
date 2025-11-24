@@ -61,6 +61,7 @@ public class Contact {
     public List<BorrowedGood> getBorrowedGoods() {
         return borrowedGoods;
     }
+
     public void setBorrowedGoods(List<BorrowedGood> borrowedGoods) {
         this.borrowedGoods = borrowedGoods;
     }

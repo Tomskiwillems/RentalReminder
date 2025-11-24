@@ -1,10 +1,13 @@
 package RentalReminder.controller;
 
 import RentalReminder.dto.LoginRequest;
+import RentalReminder.dto.LoginResponse;
 import RentalReminder.dto.RegisterRequest;
 import RentalReminder.dto.RegisterResponse;
 import RentalReminder.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,9 +19,19 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/login")
-    public ResponseEntity<String> logInUser(@RequestBody LoginRequest loginRequest) {
-        final String message = userService.loginUser(loginRequest);
-        return ResponseEntity.ok(message);
+    public ResponseEntity<LoginResponse> logInUser(@RequestBody LoginRequest loginRequest) {
+        LoginResponse loginResponse = new LoginResponse();
+        try {
+            ResponseCookie responseCookie = userService.loginUser(loginRequest);
+            loginResponse.setMessage("Logged in successfully");
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.SET_COOKIE, responseCookie.toString())
+                    .body(loginResponse);
+        }
+        catch (RuntimeException e){
+            loginResponse.setMessage(e.getMessage());
+            return ResponseEntity.badRequest().body(loginResponse);
+        }
     }
 
     @PostMapping("/register")
