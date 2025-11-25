@@ -21,6 +21,12 @@ supabase:
   url: ${SUPABASE_URL}
   anon-key: ${SUPABASE_ANON_KEY}
 
+frontend:
+  url: ${FRONTEND_URL:http://localhost:3000,http://localhost:5173}
+
+cookie:
+  secure: ${COOKIE_SECURE:true}  # true = secure flag (browsers allow this on localhost HTTP)
+
 server:
   port: 8080
 
