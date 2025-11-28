@@ -1,6 +1,6 @@
-package RentalReminder.dto;
+package RentalReminder.dto.authentication;
 
-public class LoginResponse {
+public class ValidateResponse {
 
     private String message;
 

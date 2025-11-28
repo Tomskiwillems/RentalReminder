@@ -1,4 +1,4 @@
-package RentalReminder.dto;
+package RentalReminder.dto.authentication;
 
 public class SupabaseSession {
     private String access_token;

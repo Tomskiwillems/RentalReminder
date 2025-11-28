@@ -1,13 +1,12 @@
-package RentalReminder.dto;
+package RentalReminder.dto.authentication;
 
 import java.util.UUID;
 
-public class RegisterRequest {
+public class LoginRequest {
 
     private UUID id;
     private String email;
     private String password;
-    private String passwordConfirm;
 
     public UUID getId() {
         return id;
@@ -31,13 +30,5 @@ public class RegisterRequest {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getPasswordConfirm() {
-        return passwordConfirm;
-    }
-
-    public void setPasswordConfirm(String passwordConfirm) {
-        this.passwordConfirm = passwordConfirm;
     }
 }

@@ -1,4 +1,4 @@
-package RentalReminder.dto;
+package RentalReminder.dto.response;
 
 import java.util.Map;
 

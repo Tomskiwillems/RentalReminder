@@ -11,5 +11,5 @@ import java.util.UUID;
 public interface BorrowedGoodRepository extends JpaRepository<BorrowedGood, Integer> {
 
     // Find all items for a given user
-    List<BorrowedGood> findByUserProfileSupabaseUserId(UUID supabaseUserId);
+    List<BorrowedGood> findByUserProfileSupabaseUserIdAndDeletedFalseOrderByEndDateAscStartDateAsc(UUID supabaseUserId);
 }

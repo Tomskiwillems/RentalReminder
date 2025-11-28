@@ -1,6 +1,8 @@
 package RentalReminder.entity;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
+
 import java.time.LocalDateTime;
 
 @Entity
@@ -31,6 +33,10 @@ public class BorrowedGood {
 
     @Column(name = "amount", nullable = false)
     private Integer amount;
+
+    @Column(name = "start_date", updatable = false)
+    @CreationTimestamp
+    private LocalDateTime startDate;
 
     @Column(name = "end_date")
     private LocalDateTime endDate;
@@ -82,6 +88,13 @@ public class BorrowedGood {
         this.amount = amount;
     }
 
+    public LocalDateTime getStartDate() {
+        return startDate;
+    }
+    public void setStartDate(LocalDateTime startDate) {
+        this.startDate = startDate;
+    }
+
     public LocalDateTime getEndDate() {
         return endDate;
     }
@@ -94,5 +107,11 @@ public class BorrowedGood {
     }
     public void setDeleted(Boolean deleted) {
         this.deleted = deleted;
+    }
+
+    public String getGoodName() {
+        if (item != null) return item.getName();
+        if (currency != null) return currency.getName();
+        return "Unknown";
     }
 }

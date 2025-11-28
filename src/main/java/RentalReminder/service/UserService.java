@@ -1,17 +1,18 @@
 package RentalReminder.service;
 
 import RentalReminder.client.SupabaseClient;
-import RentalReminder.dto.LoginRequest;
-import RentalReminder.dto.RegisterRequest;
-import RentalReminder.dto.SupabaseResponse;
+import RentalReminder.dto.authentication.LoginRequest;
+import RentalReminder.dto.authentication.RegisterRequest;
+import RentalReminder.dto.authentication.SupabaseResponse;
 import RentalReminder.entity.UserProfile;
 import RentalReminder.mapper.UserProfileMapper;
 import RentalReminder.repository.UserProfileRepository;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.UUID;
 
 @Service
@@ -23,9 +24,8 @@ public class UserService {
     private SupabaseClient supabaseClient;
     @Autowired
     private UserProfileMapper userProfileMapper;
-
-    @Value("${cookie.secure:true}")
-    private boolean cookieSecure;
+    @Autowired
+    private AuthService authService;
 
     public String registerUser(RegisterRequest registerRequest) {
         if (!registerRequest.getPassword().equals(registerRequest.getPasswordConfirm())) {
@@ -48,14 +48,25 @@ public class UserService {
         }
         SupabaseResponse supabaseResponse = supabaseClient.login(loginRequest, SupabaseResponse.class);
         String access_token = supabaseResponse.getAccessToken();
-        // Note: SameSite=None requires secure=true per browser spec
-        // Modern browsers allow secure=true cookies on localhost even with HTTP
         return ResponseCookie.from("access_token", access_token)
                 .httpOnly(true)
-                .secure(cookieSecure)  // true for cross-origin (browsers allow this on localhost HTTP)
-                .sameSite("None")  // Required for cross-origin requests (different ports = different origins)
+                .secure(true)
+                .sameSite("None")
                 .path("/")
                 .maxAge(60 * 60)
                 .build();
+    }
+
+    public String validateToken(HttpServletRequest request) {
+        String accessToken = Arrays.stream(request.getCookies())
+                .filter(c -> c.getName().equals("access_token"))
+                .findFirst()
+                .map(jakarta.servlet.http.Cookie::getValue)
+                .orElse(null);
+        UUID userId = authService.verifyTokenAndGetUserId(accessToken);
+        if (userId == null) {
+            throw new RuntimeException("Invalid token");
+        }
+        return "Access token validated";
     }
 }

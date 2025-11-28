@@ -32,6 +32,9 @@ public class LentGood {
     @Column(name = "amount", nullable = false)
     private Integer amount;
 
+    @Column(name = "start_date")
+    private LocalDateTime startDate;
+
     @Column(name = "end_date")
     private LocalDateTime endDate;
 
@@ -81,6 +84,13 @@ public class LentGood {
         this.amount = amount;
     }
 
+    public LocalDateTime getStartDate() {
+        return startDate;
+    }
+    public void setStartDate(LocalDateTime startDate) {
+        this.startDate = startDate;
+    }
+
     public LocalDateTime getEndDate() {
         return endDate;
     }
@@ -93,5 +103,11 @@ public class LentGood {
     }
     public void setDeleted(Boolean deleted) {
         this.deleted = deleted;
+    }
+
+    public String getGoodName() {
+        if (item != null) return item.getName();
+        if (currency != null) return currency.getName();
+        return "Unknown";
     }
 }

@@ -11,5 +11,5 @@ import java.util.UUID;
 public interface LentGoodRepository extends JpaRepository<LentGood, Integer> {
 
     // Find all items for a given user
-    List<LentGood> findByUserProfileSupabaseUserId(UUID supabaseUserId);
+    List<LentGood> findByUserProfileSupabaseUserIdAndDeletedFalseOrderByEndDateAscStartDateAsc(UUID supabaseUserId);
 }

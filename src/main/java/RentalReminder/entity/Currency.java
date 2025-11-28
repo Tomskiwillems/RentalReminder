@@ -20,6 +20,9 @@ public class Currency {
     @Column(name = "name", nullable = false)
     private String name;
 
+    @Column(name = "description")
+    private String description;
+
     @OneToMany(mappedBy = "currency", fetch = FetchType.LAZY)
     private java.util.List<LentGood> lentGoods = new java.util.ArrayList<>();
 
@@ -48,6 +51,14 @@ public class Currency {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public List<LentGood> getLentGoods() {

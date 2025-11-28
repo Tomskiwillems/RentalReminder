@@ -1,7 +1,6 @@
 package RentalReminder.mapper;
 
-import RentalReminder.dto.LoginRequest;
-import RentalReminder.dto.RegisterRequest;
+import RentalReminder.dto.authentication.RegisterRequest;
 import RentalReminder.entity.UserProfile;
 import org.springframework.stereotype.Service;
 
@@ -12,13 +11,6 @@ public class UserProfileMapper {
         UserProfile userProfile = new UserProfile();
         userProfile.setSupabaseUserId(registerRequest.getId());
         userProfile.setEmail(registerRequest.getEmail());
-        return userProfile;
-    }
-
-    public UserProfile mapLoginRequestToUserProfile(LoginRequest loginRequestDto) {
-        UserProfile userProfile = new UserProfile();
-        userProfile.setSupabaseUserId(loginRequestDto.getId());
-        userProfile.setEmail(loginRequestDto.getEmail());
         return userProfile;
     }
 }
