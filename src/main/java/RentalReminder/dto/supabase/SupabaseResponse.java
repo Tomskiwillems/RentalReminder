@@ -1,4 +1,4 @@
-package RentalReminder.dto.authentication;
+package RentalReminder.dto.supabase;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

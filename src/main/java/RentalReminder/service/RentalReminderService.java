@@ -1,5 +1,6 @@
 package RentalReminder.service;
 
+import RentalReminder.dto.response.DashboardResponse;
 import RentalReminder.entity.BorrowedGood;
 import RentalReminder.entity.LentGood;
 import RentalReminder.mapper.GridViewMapper;
@@ -22,7 +23,7 @@ public class RentalReminderService {
     @Autowired
     private GridViewMapper rentalReminderGridViewGoodsMapper;
 
-    public Map<String, Object> getDashboardData(HttpServletRequest request) {
+    public DashboardResponse getDashboardData(HttpServletRequest request) {
         String accessToken = Arrays.stream(request.getCookies())
                 .filter(c -> c.getName().equals("access_token"))
                 .findFirst()
@@ -31,6 +32,8 @@ public class RentalReminderService {
         UUID userProfileId = authService.verifyTokenAndGetUserId(accessToken);
         List<LentGood> lentGoods = lentGoodRepository.findByUserProfileSupabaseUserIdAndDeletedFalseOrderByEndDateAscStartDateAsc(userProfileId);
         List<BorrowedGood> borrowedGoods = borrowedGoodRepository.findByUserProfileSupabaseUserIdAndDeletedFalseOrderByEndDateAscStartDateAsc(userProfileId);
-        return rentalReminderGridViewGoodsMapper.mapLentAndBorrowedGoodsToMap(lentGoods, borrowedGoods);
+        DashboardResponse  dashboardResponse = new DashboardResponse();
+        dashboardResponse.setGridViewItems(rentalReminderGridViewGoodsMapper.mapLentAndBorrowedGoodsToMap(lentGoods, borrowedGoods));
+        return dashboardResponse;
     }
 }

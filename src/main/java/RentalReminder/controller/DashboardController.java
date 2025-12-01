@@ -11,21 +11,18 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api")
-public class DashboardController {
+public class DashboardController extends BaseController{
 
     @Autowired
     private RentalReminderService rentalReminderService;
 
     @GetMapping("/dashboard")
     public ResponseEntity<DashboardResponse> getDashboardData(HttpServletRequest request) {
-        DashboardResponse dashboardResponse = new DashboardResponse();
-        try {
-            dashboardResponse.setGridViewItems(rentalReminderService.getDashboardData(request));
-            return ResponseEntity.ok(dashboardResponse);
-        }
-        catch (RuntimeException e) {
-            dashboardResponse.setMessage(e.getMessage());
-            return ResponseEntity.badRequest().body(dashboardResponse);
-        }
+
+        return handle(
+                DashboardResponse::new,
+                response -> rentalReminderService.getDashboardData(request)
+        );
     }
+
 }

@@ -1,6 +1,6 @@
 package RentalReminder.mapper;
 
-import RentalReminder.dto.authentication.RegisterRequest;
+import RentalReminder.dto.request.RegisterRequest;
 import RentalReminder.entity.UserProfile;
 import org.springframework.stereotype.Service;
 

@@ -1,4 +1,4 @@
-package RentalReminder.dto.authentication;
+package RentalReminder.dto.request;
 
 import java.util.UUID;
 

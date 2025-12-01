@@ -17,17 +17,29 @@ public class ItemController extends BaseController {
 
     @GetMapping("")
     public ResponseEntity<ItemsResponse> getItems(HttpServletRequest request) {
-        return handle(() -> itemService.getItems(request));
+        return handle(
+                ItemsResponse::new,
+                response -> itemService.getItems(request)
+        );
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ItemResponse> getItem(HttpServletRequest request, @PathVariable int id) {
-        return handle(() -> itemService.getItem(request, id));
+        return handle(
+                ItemResponse::new,
+                response -> itemService.getItem(request, id)
+        );
     }
 
     @PostMapping("/add")
-    public ResponseEntity<ItemAddResponse> addItem(HttpServletRequest request, @RequestBody ItemRequest dto) {
-        return handle(() -> itemService.addItem(request, dto));
+    public ResponseEntity<ItemAddResponse> addItem(
+            HttpServletRequest request,
+            @RequestBody ItemRequest dto) {
+
+        return handle(
+                ItemAddResponse::new,
+                response -> itemService.addItem(request, dto)
+        );
     }
 
     @PostMapping("/edit/{id}")
@@ -35,11 +47,21 @@ public class ItemController extends BaseController {
             HttpServletRequest request,
             @PathVariable int id,
             @RequestBody ItemRequest dto) {
-        return handle(() -> itemService.editItem(request, dto, id));
+
+        return handle(
+                ItemEditResponse::new,
+                response -> itemService.editItem(request, dto, id)
+        );
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<ItemDeleteResponse> deleteItem(HttpServletRequest request, @PathVariable int id) {
-        return handle(() -> itemService.deleteItem(request, id));
+    public ResponseEntity<ItemDeleteResponse> deleteItem(
+            HttpServletRequest request,
+            @PathVariable int id) {
+
+        return handle(
+                ItemDeleteResponse::new,
+                response -> itemService.deleteItem(request, id)
+        );
     }
 }

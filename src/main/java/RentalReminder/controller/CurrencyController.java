@@ -17,17 +17,29 @@ public class CurrencyController extends BaseController {
 
     @GetMapping("")
     public ResponseEntity<CurrenciesResponse> getCurrencies(HttpServletRequest request) {
-        return handle(() -> currencyService.getCurrencies(request));
+        return handle(
+                CurrenciesResponse::new,
+                response -> currencyService.getCurrencies(request)
+        );
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<CurrencyResponse> getCurrency(HttpServletRequest request, @PathVariable int id) {
-        return handle(() -> currencyService.getCurrency(request, id));
+        return handle(
+                CurrencyResponse::new,
+                response -> currencyService.getCurrency(request, id)
+        );
     }
 
     @PostMapping("/add")
-    public ResponseEntity<CurrencyAddResponse> addCurrency(HttpServletRequest request, @RequestBody CurrencyRequest dto) {
-        return handle(() -> currencyService.addCurrency(request, dto));
+    public ResponseEntity<CurrencyAddResponse> addCurrency(
+            HttpServletRequest request,
+            @RequestBody CurrencyRequest dto) {
+
+        return handle(
+                CurrencyAddResponse::new,
+                response -> currencyService.addCurrency(request, dto)
+        );
     }
 
     @PostMapping("/edit/{id}")
@@ -35,11 +47,21 @@ public class CurrencyController extends BaseController {
             HttpServletRequest request,
             @PathVariable int id,
             @RequestBody CurrencyRequest dto) {
-        return handle(() -> currencyService.editCurrency(request, dto, id));
+
+        return handle(
+                CurrencyEditResponse::new,
+                response -> currencyService.editCurrency(request, dto, id)
+        );
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<CurrencyDeleteResponse> deleteCurrency(HttpServletRequest request, @PathVariable int id) {
-        return handle(() -> currencyService.deleteCurrency(request, id));
+    public ResponseEntity<CurrencyDeleteResponse> deleteCurrency(
+            HttpServletRequest request,
+            @PathVariable int id) {
+
+        return handle(
+                CurrencyDeleteResponse::new,
+                response -> currencyService.deleteCurrency(request, id)
+        );
     }
 }

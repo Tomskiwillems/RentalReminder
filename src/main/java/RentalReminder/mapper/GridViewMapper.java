@@ -46,37 +46,4 @@ public class GridViewMapper {
                 })
                 .toList();
     }
-
-    public List<Map<String, Object>> mapContactsToList(List<Contact> contacts) {
-        return contacts.stream()
-                .map(g -> {
-                    Map<String, Object> map = new HashMap<>();
-                    map.put("name", g.getName());
-                    map.put("description", g.getDescription());
-                    return map;
-                })
-                .toList();
-    }
-
-    public List<Map<String, Object>> mapItemsToList(List<Item> items) {
-        return items.stream()
-                .map(g -> {
-                    Map<String, Object> map = new HashMap<>();
-                    map.put("name", g.getName());
-                    map.put("description", g.getDescription());
-                    return map;
-                })
-                .toList();
-    }
-
-    public List<Map<String, Object>> mapCurrenciesToList(List<Currency> currencies) {
-        return currencies.stream()
-                .map(g -> {
-                    Map<String, Object> map = new HashMap<>();
-                    map.put("name", g.getName());
-                    map.put("description", g.getDescription());
-                    return map;
-                })
-                .toList();
-    }
 }

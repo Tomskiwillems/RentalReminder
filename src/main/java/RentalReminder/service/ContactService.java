@@ -32,15 +32,22 @@ public class ContactService extends BaseService {
     // Get all contacts for the current user
     public ContactsResponse getContacts(HttpServletRequest request) {
         UUID currentUserId = getCurrentUserId(request, authService);
-        List<Contact> contacts = contactRepository.findByUserProfileSupabaseUserId(currentUserId);
+        List<Contact> contacts = safeRepo(
+                () -> contactRepository.findByUserProfileSupabaseUserId(currentUserId),
+                "Failed to fetch contacts"
+        );
         return contactMapper.mapToContactsResponse(contacts);
     }
 
     // Get a single contact
     public ContactResponse getContact(HttpServletRequest request, int contactId) {
         UUID currentUserId = getCurrentUserId(request, authService);
-        Contact contact = getEntityById(contactRepository.findById(contactId), "Contact not found");
-        checkOwnership(contact.getUserProfile().getSupabaseUserId(), currentUserId, "Contact does not belong to this user");
+        Contact contact = getEntityById(
+                safeRepo(() -> contactRepository.findById(contactId), "Failed to fetch contact"),
+                "Contact not found"
+        );
+        checkOwnership(contact.getUserProfile().getSupabaseUserId(), currentUserId,
+                "Contact does not belong to this user");
         return contactMapper.mapToContactResponse(contact);
     }
 
@@ -48,46 +55,39 @@ public class ContactService extends BaseService {
     public ContactAddResponse addContact(HttpServletRequest request, ContactRequest contactRequest) {
         UUID currentUserId = getCurrentUserId(request, authService);
         UserProfile userProfile = getEntityById(
-                userProfileRepository.findBySupabaseUserId(currentUserId),
+                safeRepo(() -> userProfileRepository.findBySupabaseUserId(currentUserId), "Failed to fetch user profile"),
                 "UserProfile not found"
         );
         Contact contact = contactMapper.mapToContact(contactRequest, userProfile);
-        Contact savedContact = contactRepository.save(contact);
-        if (savedContact.getId() < 1) {
-            throw new RuntimeException("Failed to add the contact");
-        }
+        safeRepo(() -> contactRepository.save(contact), "Failed to add contact");
         return createResponse("Contact added successfully", ContactAddResponse.class);
     }
 
     // Edit a contact
     public ContactEditResponse editContact(HttpServletRequest request, ContactRequest contactRequest, int contactId) {
         UUID currentUserId = getCurrentUserId(request, authService);
-        Contact contact = getEntityById(contactRepository.findById(contactId), "Contact not found");
-        checkOwnership(contact.getUserProfile().getSupabaseUserId(), currentUserId, "Contact does not belong to this user");
-
+        Contact contact = getEntityById(
+                safeRepo(() -> contactRepository.findById(contactId), "Failed to fetch contact"),
+                "Contact not found"
+        );
+        checkOwnership(contact.getUserProfile().getSupabaseUserId(), currentUserId,
+                "Contact does not belong to this user");
         contact.setName(contactRequest.getName());
         contact.setDescription(contactRequest.getDescription());
-
-        Contact updatedContact = contactRepository.save(contact);
-
-        if (!updatedContact.getName().equals(contactRequest.getName()) ||
-                !updatedContact.getDescription().equals(contactRequest.getDescription())) {
-            throw new RuntimeException("Failed to edit the contact");
-        }
+        safeRepo(() -> contactRepository.save(contact), "Failed to edit contact");
         return createResponse("Contact edited successfully", ContactEditResponse.class);
     }
 
     // Delete a contact
     public ContactDeleteResponse deleteContact(HttpServletRequest request, int contactId) {
         UUID currentUserId = getCurrentUserId(request, authService);
-        Contact contact = getEntityById(contactRepository.findById(contactId), "Contact not found");
-        checkOwnership(contact.getUserProfile().getSupabaseUserId(), currentUserId, "Contact does not belong to this user");
-
-        contactRepository.delete(contact);
-
-        if (contactRepository.existsById(contactId)) {
-            throw new RuntimeException("Failed to delete the contact");
-        }
+        Contact contact = getEntityById(
+                safeRepo(() -> contactRepository.findById(contactId), "Failed to fetch contact"),
+                "Contact not found"
+        );
+        checkOwnership(contact.getUserProfile().getSupabaseUserId(), currentUserId,
+                "Contact does not belong to this user");
+        safeRepoVoid(() -> contactRepository.delete(contact), "Failed to delete contact");
         return createResponse("Contact deleted successfully", ContactDeleteResponse.class);
     }
 }

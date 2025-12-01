@@ -1,4 +1,4 @@
-package RentalReminder.dto.authentication;
+package RentalReminder.dto.supabase;
 
 import java.time.OffsetDateTime;
 import java.util.Map;

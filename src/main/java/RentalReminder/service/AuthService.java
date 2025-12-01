@@ -7,11 +7,15 @@ import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.UUID;
+
+import RentalReminder.exception.ApiException;
 
 @Service
 public class AuthService {
@@ -25,12 +29,11 @@ public class AuthService {
         this.secretKey = Keys.hmacShaKeyFor(keybytes);
     }
 
-
     public UUID verifyTokenAndGetUserId(String token) {
         Map<String, Object> claims = validate(token);
         String userId = (String) claims.get("sub");
         if (userId == null) {
-            throw new RuntimeException("Token missing 'sub' claim");
+            throw new ApiException("Token missing 'sub' claim", HttpStatus.UNAUTHORIZED);
         }
         return UUID.fromString(userId);
     }
@@ -43,7 +46,7 @@ public class AuthService {
                     .parseClaimsJws(jwt);
             return parsed.getBody();
         } catch (JwtException e) {
-            throw new RuntimeException("Invalid Supabase JWT: " + e.getMessage());
+            throw new ApiException("Invalid Supabase JWT: " + e.getMessage(), HttpStatus.UNAUTHORIZED);
         }
     }
 }

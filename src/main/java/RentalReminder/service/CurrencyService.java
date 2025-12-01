@@ -32,15 +32,22 @@ public class CurrencyService extends BaseService {
     // Get all currencies for the current user
     public CurrenciesResponse getCurrencies(HttpServletRequest request) {
         UUID currentUserId = getCurrentUserId(request, authService);
-        List<Currency> currencies = currencyRepository.findByUserProfileSupabaseUserId(currentUserId);
+        List<Currency> currencies = safeRepo(
+                () -> currencyRepository.findByUserProfileSupabaseUserId(currentUserId),
+                "Failed to fetch currencies"
+        );
         return currencyMapper.mapToCurrenciesResponse(currencies);
     }
 
     // Get a single currency
     public CurrencyResponse getCurrency(HttpServletRequest request, int currencyId) {
         UUID currentUserId = getCurrentUserId(request, authService);
-        Currency currency = getEntityById(currencyRepository.findById(currencyId), "Currency not found");
-        checkOwnership(currency.getUserProfile().getSupabaseUserId(), currentUserId, "Currency does not belong to this user");
+        Currency currency = getEntityById(
+                safeRepo(() -> currencyRepository.findById(currencyId), "Failed to fetch currency"),
+                "Currency not found"
+        );
+        checkOwnership(currency.getUserProfile().getSupabaseUserId(), currentUserId,
+                "Currency does not belong to this user");
         return currencyMapper.mapToCurrencyResponse(currency);
     }
 
@@ -48,48 +55,39 @@ public class CurrencyService extends BaseService {
     public CurrencyAddResponse addCurrency(HttpServletRequest request, CurrencyRequest dto) {
         UUID currentUserId = getCurrentUserId(request, authService);
         UserProfile userProfile = getEntityById(
-                userProfileRepository.findBySupabaseUserId(currentUserId),
+                safeRepo(() -> userProfileRepository.findBySupabaseUserId(currentUserId), "Failed to fetch user profile"),
                 "UserProfile not found"
         );
         Currency currency = currencyMapper.mapToCurrency(dto, userProfile);
-        Currency savedCurrency = currencyRepository.save(currency);
-        if (savedCurrency.getId() < 1) {
-            throw new RuntimeException("Failed to add the currency");
-        }
+        safeRepo(() -> currencyRepository.save(currency), "Failed to add currency");
         return createResponse("Currency added successfully", CurrencyAddResponse.class);
     }
 
     // Edit a currency
     public CurrencyEditResponse editCurrency(HttpServletRequest request, CurrencyRequest dto, int currencyId) {
         UUID currentUserId = getCurrentUserId(request, authService);
-        Currency currency = getEntityById(currencyRepository.findById(currencyId), "Currency not found");
-        checkOwnership(currency.getUserProfile().getSupabaseUserId(), currentUserId, "Currency does not belong to this user");
-
+        Currency currency = getEntityById(
+                safeRepo(() -> currencyRepository.findById(currencyId), "Failed to fetch currency"),
+                "Currency not found"
+        );
+        checkOwnership(currency.getUserProfile().getSupabaseUserId(), currentUserId,
+                "Currency does not belong to this user");
         currency.setName(dto.getName());
         currency.setDescription(dto.getDescription());
-
-        Currency updatedCurrency = currencyRepository.save(currency);
-
-        if (!updatedCurrency.getName().equals(dto.getName()) ||
-                !updatedCurrency.getDescription().equals(dto.getDescription())) {
-            throw new RuntimeException("Failed to edit the currency");
-        }
-
+        safeRepo(() -> currencyRepository.save(currency), "Failed to edit currency");
         return createResponse("Currency edited successfully", CurrencyEditResponse.class);
     }
 
     // Delete a currency
     public CurrencyDeleteResponse deleteCurrency(HttpServletRequest request, int currencyId) {
         UUID currentUserId = getCurrentUserId(request, authService);
-        Currency currency = getEntityById(currencyRepository.findById(currencyId), "Currency not found");
-        checkOwnership(currency.getUserProfile().getSupabaseUserId(), currentUserId, "Currency does not belong to this user");
-
-        currencyRepository.delete(currency);
-
-        if (currencyRepository.existsById(currencyId)) {
-            throw new RuntimeException("Failed to delete the currency");
-        }
-
+        Currency currency = getEntityById(
+                safeRepo(() -> currencyRepository.findById(currencyId), "Failed to fetch currency"),
+                "Currency not found"
+        );
+        checkOwnership(currency.getUserProfile().getSupabaseUserId(), currentUserId,
+                "Currency does not belong to this user");
+        safeRepoVoid(() -> currencyRepository.delete(currency), "Failed to delete currency");
         return createResponse("Currency deleted successfully", CurrencyDeleteResponse.class);
     }
 }

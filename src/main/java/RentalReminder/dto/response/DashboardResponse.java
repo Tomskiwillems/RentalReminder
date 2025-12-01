@@ -2,16 +2,8 @@ package RentalReminder.dto.response;
 
 import java.util.Map;
 
-public class DashboardResponse {
-    private String message;
+public class DashboardResponse extends BaseResponseDto {
     private Map<String, Object> gridViewItems;
-
-    public String getMessage() {
-        return message;
-    }
-    public void setMessage(String message) {
-        this.message = message;
-    }
 
     public Map<String, Object> getGridViewItems() {
         return gridViewItems;

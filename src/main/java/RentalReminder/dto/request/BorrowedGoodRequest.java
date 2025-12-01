@@ -13,7 +13,12 @@ public class BorrowedGoodRequest {
     private Item item;
     private Currency currency;
     private int amount;
-    private LocalDateTime end_date;
+    private LocalDateTime endDate;
+    private LocalDateTime startDate;
+
+    public BorrowedGoodRequest() {
+        this.startDate = LocalDateTime.now();
+    }
 
     public int getId() {
         return id;
@@ -55,11 +60,19 @@ public class BorrowedGoodRequest {
         this.amount = amount;
     }
 
-    public LocalDateTime getEnd_date() {
-        return end_date;
+    public LocalDateTime getEndDate() {
+        return endDate;
     }
 
-    public void setEnd_date(LocalDateTime end_date) {
-        this.end_date = end_date;
+    public void setEndDate(LocalDateTime endDate) {
+        this.endDate = endDate;
+    }
+
+    public LocalDateTime getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(LocalDateTime startDate) {
+        this.startDate = startDate;
     }
 }
