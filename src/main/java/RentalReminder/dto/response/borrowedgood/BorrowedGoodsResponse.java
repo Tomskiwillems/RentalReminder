@@ -3,17 +3,16 @@ package RentalReminder.dto.response.borrowedgood;
 import RentalReminder.dto.response.BaseResponseDto;
 
 import java.util.List;
-import java.util.Map;
 
 public class BorrowedGoodsResponse extends BaseResponseDto {
 
-    private List<Map<String, Object>> borrowedGoods;
+    private List<BorrowedGoodResponse> borrowedGoods;
 
-    public List<Map<String, Object>> getBorrowedGoods() {
+    public List<BorrowedGoodResponse> getBorrowedGoods() {
         return borrowedGoods;
     }
 
-    public void setBorrowedGoods(List<Map<String, Object>> borrowedGoods) {
+    public void setBorrowedGoods(List<BorrowedGoodResponse> borrowedGoods) {
         this.borrowedGoods = borrowedGoods;
     }
 }

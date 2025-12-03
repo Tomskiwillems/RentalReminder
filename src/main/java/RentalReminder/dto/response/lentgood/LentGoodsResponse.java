@@ -7,13 +7,13 @@ import java.util.Map;
 
 public class LentGoodsResponse extends BaseResponseDto {
 
-    private List<Map<String, Object>> lentGoods;
+    private List<LentGoodResponse> lentGoods;
 
-    public List<Map<String, Object>> getLentGoods() {
+    public List<LentGoodResponse> getLentGoods() {
         return lentGoods;
     }
 
-    public void setLentGoods(List<Map<String, Object>> lentGoods) {
+    public void setLentGoods(List<LentGoodResponse> lentGoods) {
         this.lentGoods = lentGoods;
     }
 }

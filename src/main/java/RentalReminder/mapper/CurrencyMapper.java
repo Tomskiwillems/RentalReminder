@@ -7,25 +7,25 @@ import RentalReminder.entity.Currency;
 import RentalReminder.entity.UserProfile;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class CurrencyMapper {
 
     public CurrenciesResponse mapToCurrenciesResponse(List<Currency> currencies) {
         CurrenciesResponse response = new CurrenciesResponse();
-        response.setCurrencies(currencies.stream()
-                .map(c -> {
-                    Map<String, Object> map = new HashMap<>();
-                    map.put("id", c.getId());
-                    map.put("name", c.getName());
-                    map.put("description", c.getDescription());
-                    return map;
-                })
-                .toList());
+        List<CurrencyResponse> currencyResponses = currencies.stream()
+                .map(this::mapToCurrencyResponse)
+                .collect(Collectors.toList());
+        response.setCurrencies(currencyResponses);
         return response;
+    }
+
+    public List<CurrencyResponse> mapToCurrencyResponseList(List<Currency> currencies) {
+        return currencies.stream()
+                .map(this::mapToCurrencyResponse)
+                .collect(Collectors.toList());
     }
 
     public CurrencyResponse mapToCurrencyResponse(Currency currency) {

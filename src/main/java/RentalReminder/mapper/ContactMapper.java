@@ -7,26 +7,27 @@ import RentalReminder.entity.Contact;
 import RentalReminder.entity.UserProfile;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class ContactMapper {
 
     public ContactsResponse mapToContactsResponse(List<Contact> contacts) {
         ContactsResponse contactsResponse = new ContactsResponse();
-        contactsResponse.setContacts(contacts.stream()
-                .map(g -> {
-                    Map<String, Object> map = new HashMap<>();
-                    map.put("id", g.getId());
-                    map.put("name", g.getName());
-                    map.put("description", g.getDescription());
-                    return map;
-                })
-                .toList());
+        List<ContactResponse> contactResponses = contacts.stream()
+                .map(this::mapToContactResponse)
+                .collect(Collectors.toList());
+        contactsResponse.setContacts(contactResponses);
         return contactsResponse;
     }
+
+    public List<ContactResponse> mapToContactResponseList(List<Contact> contacts) {
+        return contacts.stream()
+                .map(this::mapToContactResponse)
+                .collect(Collectors.toList());
+    }
+
 
     public ContactResponse mapToContactResponse(Contact contact) {
         ContactResponse contactResponse = new ContactResponse();

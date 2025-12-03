@@ -31,11 +31,28 @@ public class LentGoodController extends BaseController {
         );
     }
 
+    @GetMapping("/add/data")
+    public ResponseEntity<LentGoodAddDataResponse> getLentGoodAddData(HttpServletRequest request) {
+        return handle(
+                LentGoodAddDataResponse::new,
+                response -> lentGoodService.getLentGoodAddData(request)
+        );
+    }
+
+    @GetMapping("/edit/data/{id}")
+    public ResponseEntity<LentGoodEditDataResponse> getLentGoodEditData(
+            HttpServletRequest request,
+            @PathVariable int id) {
+        return handle(
+                LentGoodEditDataResponse::new,
+                response -> lentGoodService.getLentGoodEditData(request, id)
+        );
+    }
+
     @PostMapping("/add")
     public ResponseEntity<LentGoodAddResponse> addLentGood(
             HttpServletRequest request,
             @RequestBody LentGoodRequest dto) {
-
         return handle(
                 LentGoodAddResponse::new,
                 response -> lentGoodService.addLentGood(request, dto)
@@ -47,7 +64,6 @@ public class LentGoodController extends BaseController {
             HttpServletRequest request,
             @PathVariable int id,
             @RequestBody LentGoodRequest dto) {
-
         return handle(
                 LentGoodEditResponse::new,
                 response -> lentGoodService.editLentGood(request, dto, id)
@@ -58,7 +74,6 @@ public class LentGoodController extends BaseController {
     public ResponseEntity<LentGoodDeleteResponse> deleteLentGood(
             HttpServletRequest request,
             @PathVariable int id) {
-
         return handle(
                 LentGoodDeleteResponse::new,
                 response -> lentGoodService.deleteLentGood(request, id)

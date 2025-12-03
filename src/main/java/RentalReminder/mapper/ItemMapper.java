@@ -7,29 +7,27 @@ import RentalReminder.entity.Item;
 import RentalReminder.entity.UserProfile;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class ItemMapper {
 
-    // Map a list of Items to ItemsResponse (list of maps)
     public ItemsResponse mapToItemsResponse(List<Item> items) {
         ItemsResponse itemsResponse = new ItemsResponse();
-        itemsResponse.setItems(items.stream()
-                .map(item -> {
-                    Map<String, Object> map = new HashMap<>();
-                    map.put("id", item.getId());
-                    map.put("name", item.getName());
-                    map.put("description", item.getDescription());
-                    return map;
-                })
-                .toList());
+        List<ItemResponse> itemResponses = items.stream()
+                .map(this::mapToItemResponse)
+                .collect(Collectors.toList());
+        itemsResponse.setItems(itemResponses);
         return itemsResponse;
     }
 
-    // Map a single Item entity to ItemResponse DTO
+    public List<ItemResponse> mapToItemResponseList(List<Item> items) {
+        return items.stream()
+                .map(this::mapToItemResponse)
+                .collect(Collectors.toList());
+    }
+
     public ItemResponse mapToItemResponse(Item item) {
         ItemResponse itemResponse = new ItemResponse();
         itemResponse.setId(item.getId());
@@ -38,7 +36,6 @@ public class ItemMapper {
         return itemResponse;
     }
 
-    // Map an ItemRequest + UserProfile to an Item entity (for saving/updating)
     public Item mapToItem(ItemRequest itemRequest, UserProfile userProfile) {
         Item item = new Item();
         item.setName(itemRequest.getName());

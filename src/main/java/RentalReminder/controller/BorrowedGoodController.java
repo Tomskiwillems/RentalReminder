@@ -31,11 +31,28 @@ public class BorrowedGoodController extends BaseController {
         );
     }
 
+    @GetMapping("/add/data")
+    public ResponseEntity<BorrowedGoodAddDataResponse> getBorrowedGoodAddData(HttpServletRequest request) {
+        return handle(
+                BorrowedGoodAddDataResponse::new,
+                response -> borrowedGoodService.getBorrowedGoodAddData(request)
+        );
+    }
+
+    @GetMapping("/edit/data/{id}")
+    public ResponseEntity<BorrowedGoodEditDataResponse> getBorrowedGoodEditData(
+            HttpServletRequest request,
+            @PathVariable int id) {
+        return handle(
+                BorrowedGoodEditDataResponse::new,
+                response -> borrowedGoodService.getBorrowedGoodEditData(request, id)
+        );
+    }
+
     @PostMapping("/add")
     public ResponseEntity<BorrowedGoodAddResponse> addBorrowedGood(
             HttpServletRequest request,
             @RequestBody BorrowedGoodRequest dto) {
-
         return handle(
                 BorrowedGoodAddResponse::new,
                 response -> borrowedGoodService.addBorrowedGood(request, dto)
@@ -47,7 +64,6 @@ public class BorrowedGoodController extends BaseController {
             HttpServletRequest request,
             @PathVariable int id,
             @RequestBody BorrowedGoodRequest dto) {
-
         return handle(
                 BorrowedGoodEditResponse::new,
                 response -> borrowedGoodService.editBorrowedGood(request, dto, id)
@@ -58,7 +74,6 @@ public class BorrowedGoodController extends BaseController {
     public ResponseEntity<BorrowedGoodDeleteResponse> deleteBorrowedGood(
             HttpServletRequest request,
             @PathVariable int id) {
-
         return handle(
                 BorrowedGoodDeleteResponse::new,
                 response -> borrowedGoodService.deleteBorrowedGood(request, id)

@@ -1,55 +1,52 @@
 package RentalReminder.dto.response.borrowedgood;
 
 import RentalReminder.dto.response.BaseResponseDto;
+import RentalReminder.dto.response.contact.ContactResponse;
+import RentalReminder.dto.response.currency.CurrencyResponse;
+import RentalReminder.dto.response.item.ItemResponse;
 
 import java.time.LocalDateTime;
 
 public class BorrowedGoodResponse extends BaseResponseDto {
 
     private int id;
-    private String contact;
-    private int contactId;
-    private int itemId;
-    private int currencyId;
+    private ContactResponse contact;
+    private ItemResponse item;
+    private CurrencyResponse currency;
     private Integer amount;
     private LocalDateTime endDate;
+    private LocalDateTime startDate;
 
     public int getId() {
         return id;
     }
+
     public void setId(int id) {
         this.id = id;
     }
 
-    public String getContact() {
+    public ContactResponse getContact() {
         return contact;
     }
-    public void setContact(String contact) {
+
+    public void setContact(ContactResponse contact) {
         this.contact = contact;
     }
 
-    public int getContactId() {
-        return contactId;
+    public ItemResponse getItem() {
+        return item;
     }
 
-    public void setContactId(int contactId) {
-        this.contactId = contactId;
+    public void setItem(ItemResponse item) {
+        this.item = item;
     }
 
-    public int getItemId() {
-        return itemId;
+    public CurrencyResponse getCurrency() {
+        return currency;
     }
 
-    public void setItemId(int itemId) {
-        this.itemId = itemId;
-    }
-
-    public int getCurrencyId() {
-        return currencyId;
-    }
-
-    public void setCurrencyId(int currencyId) {
-        this.currencyId = currencyId;
+    public void setCurrency(CurrencyResponse currency) {
+        this.currency = currency;
     }
 
     public Integer getAmount() {
@@ -66,5 +63,13 @@ public class BorrowedGoodResponse extends BaseResponseDto {
 
     public void setEndDate(LocalDateTime endDate) {
         this.endDate = endDate;
+    }
+
+    public LocalDateTime getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(LocalDateTime startDate) {
+        this.startDate = startDate;
     }
 }

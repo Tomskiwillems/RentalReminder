@@ -1,8 +1,8 @@
 package RentalReminder.mapper;
 
-import RentalReminder.dto.request.BorrowedGoodRequest;
-import RentalReminder.dto.response.borrowedgood.*;
-import RentalReminder.entity.BorrowedGood;
+import RentalReminder.dto.request.LentGoodRequest;
+import RentalReminder.dto.response.lentgood.*;
+import RentalReminder.entity.LentGood;
 import RentalReminder.entity.Contact;
 import RentalReminder.entity.Currency;
 import RentalReminder.entity.Item;
@@ -13,20 +13,20 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class BorrowedGoodMapper {
+public class LentGoodMapper {
 
     private final ContactMapper contactMapper;
     private final ItemMapper itemMapper;
     private final CurrencyMapper currencyMapper;
 
-    public BorrowedGoodMapper(ContactMapper contactMapper, ItemMapper itemMapper, CurrencyMapper currencyMapper) {
+    public LentGoodMapper(ContactMapper contactMapper, ItemMapper itemMapper, CurrencyMapper currencyMapper) {
         this.contactMapper = contactMapper;
         this.itemMapper = itemMapper;
         this.currencyMapper = currencyMapper;
     }
 
-    public BorrowedGoodResponse mapToBorrowedGoodResponse(BorrowedGood entity) {
-        BorrowedGoodResponse dto = new BorrowedGoodResponse();
+    public LentGoodResponse mapToLentGoodResponse(LentGood entity) {
+        LentGoodResponse dto = new LentGoodResponse();
         dto.setId(entity.getId());
         dto.setContact(entity.getContact() != null ? contactMapper.mapToContactResponse(entity.getContact()) : null);
         dto.setItem(entity.getItem() != null ? itemMapper.mapToItemResponse(entity.getItem()) : null);
@@ -37,35 +37,35 @@ public class BorrowedGoodMapper {
         return dto;
     }
 
-    public BorrowedGoodsResponse mapToBorrowedGoodsResponse(List<BorrowedGood> list) {
-        BorrowedGoodsResponse response = new BorrowedGoodsResponse();
-        response.setBorrowedGoods(
+    public LentGoodsResponse mapToLentGoodsResponse(List<LentGood> list) {
+        LentGoodsResponse response = new LentGoodsResponse();
+        response.setLentGoods(
                 list.stream()
-                        .map(this::mapToBorrowedGoodResponse)
+                        .map(this::mapToLentGoodResponse)
                         .collect(Collectors.toList())
         );
         return response;
     }
 
-    public BorrowedGood mapToBorrowedGood(
-            BorrowedGoodRequest request,
+    public LentGood mapToLentGood(
+            LentGoodRequest request,
             UserProfile userProfile,
             Contact contact,
             Item item,
             Currency currency) {
-        BorrowedGood bg = new BorrowedGood();
-        bg.setUserProfile(userProfile);
-        bg.setContact(contact);
-        bg.setItem(item);
-        bg.setCurrency(currency);
-        bg.setAmount(request.getAmount());
-        bg.setEndDate(request.getEndDate());
-        return bg;
+        LentGood lg = new LentGood();
+        lg.setUserProfile(userProfile);
+        lg.setContact(contact);
+        lg.setItem(item);
+        lg.setCurrency(currency);
+        lg.setAmount(request.getAmount());
+        lg.setEndDate(request.getEndDate());
+        return lg;
     }
 
-    public void updateBorrowedGood(
-            BorrowedGood entity,
-            BorrowedGoodRequest request,
+    public void updateLentGood(
+            LentGood entity,
+            LentGoodRequest request,
             Contact contact,
             Item item,
             Currency currency) {
