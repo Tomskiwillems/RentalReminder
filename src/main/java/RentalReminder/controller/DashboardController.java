@@ -1,7 +1,7 @@
 package RentalReminder.controller;
 
 import RentalReminder.dto.response.DashboardResponse;
-import RentalReminder.service.RentalReminderService;
+import RentalReminder.service.DashboardService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,14 +14,14 @@ import org.springframework.web.bind.annotation.RestController;
 public class DashboardController extends BaseController{
 
     @Autowired
-    private RentalReminderService rentalReminderService;
+    private DashboardService dashboardService;
 
     @GetMapping("/dashboard")
     public ResponseEntity<DashboardResponse> getDashboardData(HttpServletRequest request) {
 
         return handle(
                 DashboardResponse::new,
-                response -> rentalReminderService.getDashboardData(request)
+                response -> dashboardService.getDashboardData(request)
         );
     }
 

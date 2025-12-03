@@ -1,15 +1,26 @@
 package RentalReminder.dto.response;
 
-import java.util.Map;
+import RentalReminder.dto.response.borrowedgood.BorrowedGoodsResponse;
+import RentalReminder.dto.response.lentgood.LentGoodsResponse;
 
 public class DashboardResponse extends BaseResponseDto {
-    private Map<String, Object> gridViewItems;
 
-    public Map<String, Object> getGridViewItems() {
-        return gridViewItems;
+    private BorrowedGoodsResponse borrowedGoodsResponse = new BorrowedGoodsResponse();
+    private LentGoodsResponse lentGoodsResponse = new LentGoodsResponse();
+
+    public BorrowedGoodsResponse getBorrowedGoodsResponse() {
+        return borrowedGoodsResponse;
     }
 
-    public void setGridViewItems(Map<String, Object> gridViewItems) {
-        this.gridViewItems = gridViewItems;
+    public void setBorrowedGoodsResponse(BorrowedGoodsResponse borrowedGoodsResponse) {
+        this.borrowedGoodsResponse = borrowedGoodsResponse;
+    }
+
+    public LentGoodsResponse getLentGoodsResponse() {
+        return lentGoodsResponse;
+    }
+
+    public void setLentGoodsResponse(LentGoodsResponse lentGoodsResponse) {
+        this.lentGoodsResponse = lentGoodsResponse;
     }
 }
