@@ -1,26 +1,26 @@
 package RentalReminder.controller;
 
-import RentalReminder.repository.UserProfileRepository;
+import RentalReminder.dto.LoginRequestDto;
+import RentalReminder.dto.RegisterRequestDto;
 import RentalReminder.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
-@Controller
+@RestController
+@RequestMapping("/api")
 public class UserController {
 
     @Autowired
     private UserService userService;
 
     @PostMapping("/login")
-    public String logInUser() {
-        return "You have succesfully logged in";
+    public String logInUser(@RequestBody LoginRequestDto loginRequestDto) {
+        return userService.loginUser(loginRequestDto);
     }
 
-    @PostMapping("/signup")
-    public String signUpUser() {
-        return "You have succesfully signed up";
+    @PostMapping("/register")
+    public String registerUser(@RequestBody RegisterRequestDto registerRequestDto) {
+        return userService.registerUser(registerRequestDto);
     }
 
     @GetMapping("/logout")
