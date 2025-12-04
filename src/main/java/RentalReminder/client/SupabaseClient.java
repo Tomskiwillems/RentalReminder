@@ -27,7 +27,6 @@ public class SupabaseClient {
     }
 
     public <T, R> R register(T requestBody, Class<R> responseType) {
-        System.out.println("Loaded anon key = " + anonKey);
         try {
             return restClient.post()
                     .uri("/auth/v1/signup")

@@ -5,6 +5,7 @@ import RentalReminder.dto.request.RegisterRequest;
 import RentalReminder.dto.response.authentication.*;
 import RentalReminder.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,12 +18,12 @@ public class UserController extends BaseController {
     private UserService userService;
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> logInUser(@RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<LoginResponse> logInUser(@Valid @RequestBody LoginRequest loginRequest) {
         return handle(LoginResponse::new, response -> userService.loginUser(loginRequest));
     }
 
     @PostMapping("/register")
-    public ResponseEntity<RegisterResponse> registerUser(@RequestBody RegisterRequest registerRequest) {
+    public ResponseEntity<RegisterResponse> registerUser(@Valid @RequestBody RegisterRequest registerRequest) {
         return handle(RegisterResponse::new, response -> userService.registerUser(registerRequest));
     }
 

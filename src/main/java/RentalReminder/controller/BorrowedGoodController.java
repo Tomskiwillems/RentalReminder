@@ -4,6 +4,7 @@ import RentalReminder.dto.request.BorrowedGoodRequest;
 import RentalReminder.dto.response.borrowedgood.*;
 import RentalReminder.service.BorrowedGoodService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -52,7 +53,7 @@ public class BorrowedGoodController extends BaseController {
     @PostMapping("/add")
     public ResponseEntity<BorrowedGoodAddResponse> addBorrowedGood(
             HttpServletRequest request,
-            @RequestBody BorrowedGoodRequest dto) {
+            @Valid @RequestBody BorrowedGoodRequest dto) {
         return handle(
                 BorrowedGoodAddResponse::new,
                 response -> borrowedGoodService.addBorrowedGood(request, dto)
@@ -63,7 +64,7 @@ public class BorrowedGoodController extends BaseController {
     public ResponseEntity<BorrowedGoodEditResponse> editBorrowedGood(
             HttpServletRequest request,
             @PathVariable int id,
-            @RequestBody BorrowedGoodRequest dto) {
+            @Valid @RequestBody BorrowedGoodRequest dto) {
         return handle(
                 BorrowedGoodEditResponse::new,
                 response -> borrowedGoodService.editBorrowedGood(request, dto, id)

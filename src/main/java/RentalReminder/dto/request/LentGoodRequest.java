@@ -1,13 +1,17 @@
 package RentalReminder.dto.request;
 
+import jakarta.validation.constraints.NotBlank;
+
 import java.time.LocalDateTime;
 
 public class LentGoodRequest {
 
     private int id;
-    private Integer contactId;
+    @NotBlank(message = "Contact is required")
+    private int contactId;
     private Integer itemId;
     private Integer currencyId;
+    @NotBlank(message = "Amount is required")
     private int amount;
     private LocalDateTime endDate;
 
@@ -19,11 +23,11 @@ public class LentGoodRequest {
         this.id = id;
     }
 
-    public Integer getContactId() {
+    public int getContactId() {
         return contactId;
     }
 
-    public void setContactId(Integer contactId) {
+    public void setContactId(int contactId) {
         this.contactId = contactId;
     }
 

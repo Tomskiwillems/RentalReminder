@@ -1,10 +1,13 @@
 package RentalReminder.dto.request;
 
+import jakarta.validation.constraints.NotBlank;
+
 import java.util.UUID;
 
 public class CurrencyRequest {
 
     private int id;
+    @NotBlank(message = "Name is required")
     private String name;
     private String description;
 

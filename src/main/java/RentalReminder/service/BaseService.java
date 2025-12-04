@@ -25,7 +25,6 @@ public abstract class BaseService {
                         .findFirst()
                         .map(Cookie::getValue))
                 .orElse(null);
-
         if (accessToken == null) {
             throw new ApiException("Access token missing", HttpStatus.UNAUTHORIZED);
         }
@@ -67,11 +66,11 @@ public abstract class BaseService {
             return repoOperation.get();
         } catch (DataIntegrityViolationException e) {
             // Foreign key, unique constraint violations
-            throw new ApiException("Operation failed due to data constraints: " + e.getMostSpecificCause().getMessage(),
+            throw new ApiException(genericErrorMessage + ": " + e.getMessage(),
                     HttpStatus.CONFLICT);
         } catch (DataAccessException e) {
             // General repository / database errors
-            throw new ApiException(genericErrorMessage + ": " + e.getMostSpecificCause().getMessage(),
+            throw new ApiException(genericErrorMessage + ": " + e.getMessage(),
                     HttpStatus.INTERNAL_SERVER_ERROR);
         } catch (Exception e) {
             // Fallback for anything unexpected

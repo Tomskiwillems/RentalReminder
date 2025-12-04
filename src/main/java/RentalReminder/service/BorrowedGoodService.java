@@ -25,8 +25,7 @@ public class BorrowedGoodService extends BaseGoodService<
         BorrowedGoodRequest
         > {
 
-    @Autowired
-    private BorrowedGoodMapper borrowedGoodMapper;
+    private final BorrowedGoodMapper borrowedGoodMapper;
 
     public BorrowedGoodService(
             UserProfileRepository userProfileRepository,
@@ -38,7 +37,8 @@ public class BorrowedGoodService extends BaseGoodService<
             AuthService authService,
             ContactMapper contactMapper,
             ItemMapper itemMapper,
-            CurrencyMapper currencyMapper
+            CurrencyMapper currencyMapper,
+            BorrowedGoodMapper borrowedGoodMapper
     ) {
         super(
                 userProfileRepository,
@@ -52,6 +52,7 @@ public class BorrowedGoodService extends BaseGoodService<
                 itemMapper,
                 currencyMapper
         );
+        this.borrowedGoodMapper = borrowedGoodMapper;
     }
 
     public BorrowedGoodsResponse getBorrowedGoods(HttpServletRequest request) {
@@ -110,7 +111,7 @@ public class BorrowedGoodService extends BaseGoodService<
         UserProfile profile = getUserProfile(userId);
         Contact contact = getContactOrThrow(dto.getContactId(), userId);
         Item item = getItemOrThrow(dto.getItemId(), userId);
-        Currency currency = getCurrencyOrThrow(dto.getCurrencyId());
+        Currency currency = getCurrencyOrThrow(dto.getCurrencyId(), userId);
         validateItemOrCurrency(dto.getItemId(), dto.getCurrencyId());
         BorrowedGood entity = borrowedGoodMapper.mapToBorrowedGood(dto, profile, contact, item, currency);
         safeRepo(() -> borrowedGoodRepository.save(entity), "Failed to save borrowed good");
@@ -127,7 +128,7 @@ public class BorrowedGoodService extends BaseGoodService<
                 "Borrowed good does not belong to this user");
         Contact contact = getContactOrThrow(dto.getContactId(), userId);
         Item item = getItemOrThrow(dto.getItemId(), userId);
-        Currency currency = getCurrencyOrThrow(dto.getCurrencyId());
+        Currency currency = getCurrencyOrThrow(dto.getCurrencyId(), userId);
         validateItemOrCurrency(dto.getItemId(), dto.getCurrencyId());
         borrowedGoodMapper.updateBorrowedGood(entity, dto, contact, item, currency);
         safeRepo(() -> borrowedGoodRepository.save(entity), "Failed to edit borrowed good");

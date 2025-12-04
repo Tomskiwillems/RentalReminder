@@ -4,6 +4,7 @@ import RentalReminder.dto.request.CurrencyRequest;
 import RentalReminder.dto.response.currency.*;
 import RentalReminder.service.CurrencyService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -34,7 +35,7 @@ public class CurrencyController extends BaseController {
     @PostMapping("/add")
     public ResponseEntity<CurrencyAddResponse> addCurrency(
             HttpServletRequest request,
-            @RequestBody CurrencyRequest dto) {
+            @Valid @RequestBody CurrencyRequest dto) {
 
         return handle(
                 CurrencyAddResponse::new,
@@ -46,7 +47,7 @@ public class CurrencyController extends BaseController {
     public ResponseEntity<CurrencyEditResponse> editCurrency(
             HttpServletRequest request,
             @PathVariable int id,
-            @RequestBody CurrencyRequest dto) {
+            @Valid @RequestBody CurrencyRequest dto) {
 
         return handle(
                 CurrencyEditResponse::new,

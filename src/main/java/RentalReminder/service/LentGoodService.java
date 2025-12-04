@@ -25,8 +25,7 @@ public class LentGoodService extends BaseGoodService<
         LentGoodRequest
         > {
 
-    @Autowired
-    private LentGoodMapper lentGoodMapper;
+    private final LentGoodMapper lentGoodMapper;
 
     public LentGoodService(
             UserProfileRepository userProfileRepository,
@@ -38,7 +37,8 @@ public class LentGoodService extends BaseGoodService<
             AuthService authService,
             ContactMapper contactMapper,
             ItemMapper itemMapper,
-            CurrencyMapper currencyMapper
+            CurrencyMapper currencyMapper,
+            LentGoodMapper lentGoodMapper
     ) {
         super(
                 userProfileRepository,
@@ -52,6 +52,7 @@ public class LentGoodService extends BaseGoodService<
                 itemMapper,
                 currencyMapper
         );
+        this.lentGoodMapper = lentGoodMapper;
     }
 
     public LentGoodsResponse getLentGoods(HttpServletRequest request) {
@@ -104,7 +105,7 @@ public class LentGoodService extends BaseGoodService<
         UserProfile profile = getUserProfile(userId);
         Contact contact = getContactOrThrow(dto.getContactId(), userId);
         Item item = getItemOrThrow(dto.getItemId(), userId);
-        Currency currency = getCurrencyOrThrow(dto.getCurrencyId());
+        Currency currency = getCurrencyOrThrow(dto.getCurrencyId(), userId);
         validateItemOrCurrency(dto.getItemId(), dto.getCurrencyId());
         LentGood entity = lentGoodMapper.mapToLentGood(dto, profile, contact, item, currency);
         safeRepo(() -> lentGoodRepository.save(entity), "Failed to save lent good");
@@ -121,7 +122,7 @@ public class LentGoodService extends BaseGoodService<
                 "Lent good does not belong to this user");
         Contact contact = getContactOrThrow(dto.getContactId(), userId);
         Item item = getItemOrThrow(dto.getItemId(), userId);
-        Currency currency = getCurrencyOrThrow(dto.getCurrencyId());
+        Currency currency = getCurrencyOrThrow(dto.getCurrencyId(), userId);
         validateItemOrCurrency(dto.getItemId(), dto.getCurrencyId());
         lentGoodMapper.updateLentGood(entity, dto, contact, item, currency);
         safeRepo(() -> lentGoodRepository.save(entity), "Failed to edit lent good");

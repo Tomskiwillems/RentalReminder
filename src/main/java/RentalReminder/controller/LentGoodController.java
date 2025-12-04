@@ -4,6 +4,7 @@ import RentalReminder.dto.request.LentGoodRequest;
 import RentalReminder.dto.response.lentgood.*;
 import RentalReminder.service.LentGoodService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -52,7 +53,7 @@ public class LentGoodController extends BaseController {
     @PostMapping("/add")
     public ResponseEntity<LentGoodAddResponse> addLentGood(
             HttpServletRequest request,
-            @RequestBody LentGoodRequest dto) {
+            @Valid @RequestBody LentGoodRequest dto) {
         return handle(
                 LentGoodAddResponse::new,
                 response -> lentGoodService.addLentGood(request, dto)
@@ -63,7 +64,7 @@ public class LentGoodController extends BaseController {
     public ResponseEntity<LentGoodEditResponse> editLentGood(
             HttpServletRequest request,
             @PathVariable int id,
-            @RequestBody LentGoodRequest dto) {
+            @Valid @RequestBody LentGoodRequest dto) {
         return handle(
                 LentGoodEditResponse::new,
                 response -> lentGoodService.editLentGood(request, dto, id)

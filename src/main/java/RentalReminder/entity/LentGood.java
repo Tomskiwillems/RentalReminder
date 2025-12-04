@@ -1,6 +1,8 @@
 package RentalReminder.entity;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
+
 import java.time.LocalDateTime;
 
 @Entity
@@ -32,7 +34,8 @@ public class LentGood {
     @Column(name = "amount", nullable = false)
     private Integer amount;
 
-    @Column(name = "start_date")
+    @Column(name = "start_date", updatable = false)
+    @CreationTimestamp
     private LocalDateTime startDate;
 
     @Column(name = "end_date")

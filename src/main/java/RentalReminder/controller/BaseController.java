@@ -3,6 +3,7 @@ package RentalReminder.controller;
 import RentalReminder.dto.response.BaseResponseDto;
 import RentalReminder.exception.ApiException;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.util.function.Function;
@@ -19,6 +20,9 @@ public abstract class BaseController {
         } catch (ApiException e) {
             response.setMessage(e.getMessage());
             return ResponseEntity.status(e.getStatus()).body(response);
+        } catch (Exception e) {
+            response.setMessage("Internal server error");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
 }

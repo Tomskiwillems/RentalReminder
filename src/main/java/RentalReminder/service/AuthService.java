@@ -1,6 +1,5 @@
 package RentalReminder.service;
 
-import com.auth0.jwk.Jwk;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtException;
@@ -35,7 +34,11 @@ public class AuthService {
         if (userId == null) {
             throw new ApiException("Token missing 'sub' claim", HttpStatus.UNAUTHORIZED);
         }
-        return UUID.fromString(userId);
+        try {
+            return UUID.fromString(userId);
+        } catch (IllegalArgumentException e) {
+            throw new ApiException("Invalid user ID format in token", HttpStatus.UNAUTHORIZED);
+        }
     }
 
     public Map<String, Object> validate(String jwt) {

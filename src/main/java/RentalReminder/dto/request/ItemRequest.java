@@ -1,10 +1,11 @@
 package RentalReminder.dto.request;
 
-import java.util.UUID;
+import jakarta.validation.constraints.NotBlank;
 
 public class ItemRequest {
 
     private int id;
+    @NotBlank(message = "Name is required")
     private String name;
     private String description;
 

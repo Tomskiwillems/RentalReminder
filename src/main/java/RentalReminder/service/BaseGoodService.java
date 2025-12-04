@@ -72,10 +72,7 @@ public abstract class BaseGoodService<
 
     /** Count usage from both borrowed and lent goods */
     private Map<Integer, Long> buildUsageCount(UUID userId) {
-
         Map<Integer, Long> usage = new HashMap<>();
-
-        // Borrowed goods
         borrowedGoodRepository.findByUserProfileSupabaseUserIdAndDeletedFalseOrderByEndDateAscStartDateAsc(userId)
                 .forEach(bg -> {
                     if (bg.getContact() != null)
@@ -85,8 +82,6 @@ public abstract class BaseGoodService<
                     if (bg.getCurrency() != null)
                         usage.merge(bg.getCurrency().getId(), 1L, Long::sum);
                 });
-
-        // Lent goods
         lentGoodRepository.findByUserProfileSupabaseUserIdAndDeletedFalseOrderByEndDateAscStartDateAsc(userId)
                 .forEach(lg -> {
                     if (lg.getContact() != null)
@@ -96,20 +91,16 @@ public abstract class BaseGoodService<
                     if (lg.getCurrency() != null)
                         usage.merge(lg.getCurrency().getId(), 1L, Long::sum);
                 });
-
         return usage;
     }
 
     /** Ordered contacts based on usage frequency */
     protected List<Contact> getOrderedContacts(UUID userId) {
-
         List<Contact> contacts = safeRepo(
                 () -> contactRepository.findByUserProfileSupabaseUserId(userId),
                 "Failed to fetch contacts"
         );
-
         Map<Integer, Long> usage = buildUsageCount(userId);
-
         return contacts.stream()
                 .sorted(
                         Comparator
@@ -121,14 +112,11 @@ public abstract class BaseGoodService<
 
     /** Ordered items based on usage frequency */
     protected List<Item> getOrderedItems(UUID userId) {
-
         List<Item> items = safeRepo(
                 () -> itemRepository.findByUserProfileSupabaseUserId(userId),
                 "Failed to fetch items"
         );
-
         Map<Integer, Long> usage = buildUsageCount(userId);
-
         return items.stream()
                 .sorted(
                         Comparator
@@ -145,7 +133,6 @@ public abstract class BaseGoodService<
                 () -> currencyRepository.findByUserProfileSupabaseUserIdOrUserProfileSupabaseUserIdIsNull(userId),
                 "Failed to fetch currencies"
         );
-
         Map<Integer, Long> usage = buildUsageCount(userId);
 
         return currencies.stream()
@@ -162,40 +149,42 @@ public abstract class BaseGoodService<
                 safeRepo(() -> contactRepository.findById(contactId), "Failed to fetch contact"),
                 "Contact not found"
         );
-
         checkOwnership(
                 contact.getUserProfile().getSupabaseUserId(),
                 currentUserId,
                 "Contact does not belong to this user"
         );
-
         return contact;
     }
 
     protected Item getItemOrThrow(Integer itemId, UUID currentUserId) {
         if (itemId == null) return null;
-
         Item item = getEntityById(
                 safeRepo(() -> itemRepository.findById(itemId), "Failed to fetch item"),
                 "Item not found"
         );
-
         checkOwnership(
                 item.getUserProfile().getSupabaseUserId(),
                 currentUserId,
                 "Item does not belong to this user"
         );
-
         return item;
     }
 
-    protected Currency getCurrencyOrThrow(Integer currencyId) {
+    protected Currency getCurrencyOrThrow(Integer currencyId, UUID currentUserId) {
         if (currencyId == null) return null;
-
-        return getEntityById(
+        Currency currency = getEntityById(
                 safeRepo(() -> currencyRepository.findById(currencyId), "Failed to fetch currency"),
                 "Currency not found"
         );
+        if (currency.getUserProfile() != null) {
+            checkOwnership(
+                    currency.getUserProfile().getSupabaseUserId(),
+                    currentUserId,
+                    "Currency does not belong to this user"
+            );
+        }
+        return currency;
     }
 
     protected void validateItemOrCurrency(Integer itemId, Integer currencyId) {

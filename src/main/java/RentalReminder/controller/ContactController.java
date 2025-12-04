@@ -4,6 +4,7 @@ import RentalReminder.dto.request.ContactRequest;
 import RentalReminder.dto.response.contact.*;
 import RentalReminder.service.ContactService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -34,7 +35,7 @@ public class ContactController extends BaseController {
     @PostMapping("/add")
     public ResponseEntity<ContactAddResponse> addContact(
             HttpServletRequest request,
-            @RequestBody ContactRequest dto) {
+            @Valid @RequestBody ContactRequest dto) {
         return handle(
                 ContactAddResponse::new,
                 response -> contactService.addContact(request, dto)
@@ -46,7 +47,7 @@ public class ContactController extends BaseController {
     public ResponseEntity<ContactEditResponse> editContact(
             HttpServletRequest request,
             @PathVariable int id,
-            @RequestBody ContactRequest dto) {
+            @Valid @RequestBody ContactRequest dto) {
         return handle(
                 ContactEditResponse::new,
                 response -> contactService.editContact(request, dto, id)

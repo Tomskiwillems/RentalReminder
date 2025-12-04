@@ -4,6 +4,7 @@ import RentalReminder.dto.request.ItemRequest;
 import RentalReminder.dto.response.item.*;
 import RentalReminder.service.ItemService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -34,7 +35,7 @@ public class ItemController extends BaseController {
     @PostMapping("/add")
     public ResponseEntity<ItemAddResponse> addItem(
             HttpServletRequest request,
-            @RequestBody ItemRequest dto) {
+            @Valid @RequestBody ItemRequest dto) {
 
         return handle(
                 ItemAddResponse::new,
@@ -46,7 +47,7 @@ public class ItemController extends BaseController {
     public ResponseEntity<ItemEditResponse> editItem(
             HttpServletRequest request,
             @PathVariable int id,
-            @RequestBody ItemRequest dto) {
+            @Valid @RequestBody ItemRequest dto) {
 
         return handle(
                 ItemEditResponse::new,
