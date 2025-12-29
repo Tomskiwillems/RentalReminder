@@ -3,9 +3,9 @@ spring:
     name: java-21-springboot-template
   
   datasource:
-    url: jdbc:postgresql://aws-1-eu-west-1.pooler.supabase.com:6543/postgres?sslmode=require
-    username: postgres.fcwwtnfyhiibrnbldmfw
-    password: HoiRens-12345
+    url: ${SUPABASE_DB_URL}
+    username: ${SUPABASE_DB_USERNAME}
+    password: ${SUPABASE_DB_PASSWORD}
     driver-class-name: org.postgresql.Driver
   
   jpa:
@@ -18,9 +18,19 @@ spring:
         format_sql: true
 
 supabase:
-  url: ${SUPABASE_URL:https://fcwwtnfyhiibrnbldmfw.supabase.co}
-  anon-key: ${SUPABASE_ANON_KEY:your-anon-key-here}
+  url: ${SUPABASE_URL}
+  anon-key: ${SUPABASE_ANON_KEY}
+
+frontend:
+  url: ${FRONTEND_URL}
+
+cookie:
+  secure: ${COOKIE_SECURE:true}
 
 server:
   port: 8080
-
+  servlet:
+    session:
+      cookie:
+        same-site: None
+        secure: true

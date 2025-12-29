@@ -43,5 +43,13 @@ public interface UserProfileRepository extends JpaRepository<UserProfile, UUID> 
      * @return true if a profile exists, false otherwise
      */
     boolean existsBySupabaseUserId(UUID supabaseUserId);
+
+    /**
+     * Check if a user profile exists by the given email.
+     *
+     * @param email The email address
+     * @return true if a profile exists, false otherwise
+     */
+    boolean existsByEmail(String email);
 }
 

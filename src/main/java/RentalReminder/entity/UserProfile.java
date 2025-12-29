@@ -47,6 +47,12 @@ public class UserProfile {
     @OneToMany(mappedBy = "userProfile", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Currency> currencies = new ArrayList<>();
 
+    @OneToMany(mappedBy = "userProfile", fetch = FetchType.LAZY)
+    private java.util.List<LentGood> lentGoods = new java.util.ArrayList<>();
+
+    @OneToMany(mappedBy = "userProfile", fetch = FetchType.LAZY)
+    private java.util.List<BorrowedGood> borrowedGoods = new java.util.ArrayList<>();
+
     public UserProfile() {
     }
 
@@ -93,6 +99,43 @@ public class UserProfile {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public List<Contact> getContacts() {
+        return contacts;
+    }
+
+    public void setContacts(List<Contact> contacts) {
+        this.contacts = contacts;
+    }
+
+    public List<Item> getItems() {
+        return items;
+    }
+    public void setItems(List<Item> items) {
+        this.items = items;
+    }
+
+    public List<Currency> getCurrencies() {
+        return currencies;
+    }
+    public void setCurrencies(List<Currency> currencies) {
+        this.currencies = currencies;
+    }
+
+    public List<LentGood> getLentGoods() {
+        return lentGoods;
+    }
+
+    public void setLentGoods(List<LentGood> lentGoods) {
+        this.lentGoods = lentGoods;
+    }
+
+    public List<BorrowedGood> getBorrowedGoods() {
+        return borrowedGoods;
+    }
+    public void setBorrowedGoods(List<BorrowedGood> borrowedGoods) {
+        this.borrowedGoods = borrowedGoods;
     }
 
     @PrePersist
