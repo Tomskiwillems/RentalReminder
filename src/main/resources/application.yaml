@@ -25,7 +25,7 @@ frontend:
   url: ${FRONTEND_URL}
 
 cookie:
-  secure: ${COOKIE_SECURE:true}  # true = secure flag (browsers allow this on localhost HTTP)
+  secure: ${COOKIE_SECURE:true}
 
 server:
   port: 8080

@@ -11,6 +11,7 @@ import RentalReminder.mapper.UserProfileMapper;
 import RentalReminder.repository.UserProfileRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,9 @@ public class UserService extends BaseService {
     private UserProfileMapper userProfileMapper;
     @Autowired
     private AuthService authService;
+
+    @Value("${cookie.secure:true}")
+    private boolean cookieSecure;
 
     // Register user
     public RegisterResponse registerUser(RegisterRequest registerRequest) {
@@ -55,12 +59,12 @@ public class UserService extends BaseService {
         LoginResponse response = createResponse("Logged in successfully", LoginResponse.class);
         ResponseCookie cookie = ResponseCookie.from("access_token", accessToken)
                 .httpOnly(true)
-                .secure(true)
+                .secure(cookieSecure)
                 .sameSite("None")
-                .domain(".onrender.com")
                 .path("/")
                 .maxAge(60 * 60)
                 .build();
+        
         addCookie(response, cookie);
         return response;
     }
@@ -69,12 +73,12 @@ public class UserService extends BaseService {
     public LogoutResponse logoutUser() {
         ResponseCookie cookie = ResponseCookie.from("access_token", "")
                 .httpOnly(true)
-                .secure(true)
+                .secure(cookieSecure)
                 .sameSite("None")
-                .domain(".onrender.com")
                 .path("/")
                 .maxAge(0)
                 .build();
+        
         LogoutResponse response = createResponse("You have successfully logged out", LogoutResponse.class);
         addCookie(response, cookie);
         return response;
