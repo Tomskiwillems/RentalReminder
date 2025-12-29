@@ -57,6 +57,7 @@ public class UserService extends BaseService {
                 .httpOnly(true)
                 .secure(true)
                 .sameSite("None")
+                .domain(".onrender.com")
                 .path("/")
                 .maxAge(60 * 60)
                 .build();
@@ -70,6 +71,7 @@ public class UserService extends BaseService {
                 .httpOnly(true)
                 .secure(true)
                 .sameSite("None")
+                .domain(".onrender.com")
                 .path("/")
                 .maxAge(0)
                 .build();
