@@ -18,7 +18,7 @@ import java.util.List;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    @Value("${frontend.url}")
+    @Value("${frontend.urls}")
     private String frontendUrls;
 
     /**
