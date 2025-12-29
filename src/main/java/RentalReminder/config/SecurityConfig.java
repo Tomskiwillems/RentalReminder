@@ -18,8 +18,8 @@ import java.util.List;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    @Value("${frontend.urls}")
-    private String frontendUrls;
+    @Value("${frontend.url}")
+    private String frontendUrl;
 
     /**
      * Security configuration that allows all traffic.
@@ -40,8 +40,7 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         final CorsConfiguration configuration = new CorsConfiguration();
         // Use specific origins instead of wildcard when allowCredentials is true
-        final List<String> allowedOrigins = Arrays.asList(frontendUrls.split(","));
-        configuration.setAllowedOrigins(allowedOrigins);
+        configuration.setAllowedOrigins(List.of(frontendUrl));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowCredentials(true);
